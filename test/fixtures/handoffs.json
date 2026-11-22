@@ -1,0 +1,14 @@
+[
+  {
+    "name": "A correction replaces the original storage decision",
+    "older": ["Use SQLite for the catalog.", "Correction: use Postgres. The migration is still pending."],
+    "recent": "Show the plan before changing files.",
+    "rubric": ["Postgres is current; SQLite is superseded.", "The migration is not done.", "Do not begin edits without showing the plan."]
+  },
+  {
+    "name": "A failed attempt is not a completed task",
+    "older": ["Restore the demo from backup.", "The checksum failed. Do not retry that archive; request a new copy."],
+    "recent": "I can provide a replacement tomorrow.",
+    "rubric": ["Restore is blocked on a replacement.", "Do not report success or reuse the rejected archive."]
+  }
+]
