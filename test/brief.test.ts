@@ -285,3 +285,18 @@ for (const fixture of cases) {
 		} finally { f.done(); }
 	});
 }
+
+// Exercise the same chained fixture replay as the opt-in model evaluation.
+test('the repeat fixture feeds this arm its own prior checkpoint and the corrected decision', async () => {
+ const { replay } = await import('../eval/protocol.mjs');
+ const fixture = JSON.parse(readFileSync(new URL('./fixtures/handoffs.json', import.meta.url), 'utf8')).find((x: { next?: unknown }) => x.next);
+ const f = faux('Fixed handoff');
+ try {
+  const cuts = await replay(fixture, summarize, {model:f.model});
+  assert.equal(cuts.length,2);
+  assert.notEqual(cuts[0].cut,cuts[1].cut);
+  assert.ok(f.captured[1].prompt!.includes('<previous-summary>'));
+  assert.ok(f.captured[1].prompt!.includes('Fixed handoff'));
+  assert.ok(cuts[1].summary.includes(fixture.next.older[0]));
+ } finally {f.done();}
+});

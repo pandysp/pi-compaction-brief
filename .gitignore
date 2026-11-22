@@ -1,1 +1,4 @@
 node_modules/
+
+# Unreviewed evaluation outputs
+/eval/runs/
