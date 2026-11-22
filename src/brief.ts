@@ -45,6 +45,8 @@ export interface CompactionFiles {
 }
 
 export interface SummarizeResult {
+	/** Generated brief alone, for assessment without scoring the copied messages. */
+	written: string;
 	summary: string;
 	usage?: Usage;
 	details?: CompactionFiles;
@@ -134,7 +136,7 @@ export async function summarize(
 		text.trim(),
 		files.modifiedFiles.length ? `\n\n<modified-files>\n${files.modifiedFiles.join("\n")}\n</modified-files>` : "",
 	].join("\n");
-	return { summary, usage, details: files };
+	return { summary, written: text.trim(), usage, details: files };
 }
 
 // ============================================================================

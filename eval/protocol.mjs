@@ -24,8 +24,10 @@ export async function replay(fixture, summarize, options) {
     const out = await summarize(preparation, { ...options, branchEntries: entries, sessionFile: '/fictional/session.jsonl' });
     const marker = '\n</user-messages>\n\n';
     const end = out.summary.indexOf(marker);
-    if (end < 0) throw new Error('Missing end of copied history; cannot isolate model-written brief');
-    checkpoints.push({ cut: recent.id, summary: out.summary, written: out.summary.slice(end + marker.length).trim(), recent: step.recent });
+    // v0.1.0 predates the separate written field. New candidates need no particular delimiter.
+    const written = out.written ?? (end < 0 ? null : out.summary.slice(end + marker.length).split('\n<modified-files>')[0].trim());
+    if (typeof written !== 'string' || !written.trim()) throw Error('Candidate must return a nonempty written brief');
+    checkpoints.push({ cut: recent.id, summary: out.summary, written, recent: step.recent });
     previous = add({ type: 'compaction', summary: out.summary, firstKeptEntryId: recent.id, tokensBefore: 0, fromHook: true, details: out.details });
     start = cut;
   }
