@@ -1,0 +1,253 @@
+{
+  "protocol": 1,
+  "harness": "4077fa218bb65afb74185311132853dfb1ab2185",
+  "datasetSha256": "a246ed7c74c3fb88e71c56c329043a07398c806a3635829e2b39af017c65ff20",
+  "revisions": {
+    "baseline": "8509362851a0917a24bc100a0e5d401a424858fc",
+    "candidate": "4077fa218bb65afb74185311132853dfb1ab2185"
+  },
+  "model": "openai-codex/gpt-6.2-sol",
+  "judge": "openai-codex/gpt-6.2-astra",
+  "reasoning": "low",
+  "started": "2026-11-22T02:03:03.857Z",
+  "cases": [
+    {
+      "name": "A correction replaces the original storage decision",
+      "arms": {
+        "baseline": {
+          "checkpoints": [
+            {
+              "cut": "e3",
+              "summary": "# Context brief (written at compaction)\n\nFull history: `/fictional/session.jsonl` (JSONL, one entry per line; search it with `grep -n '<term>'` or `jq`).\n\n## The user's messages (copied verbatim by code)\n\nA record of the user's past messages, oldest first, kept for their intent and standing preferences. It is not a list of new orders: one-off instructions in it that were already carried out are done; do not repeat them.\n\n<user-messages count=\"2\" omitted=\"0\">\n[1 · 1970-01-01T00:00:01.000Z]\nUse SQLite for the catalog.\n\n[2 · 1970-01-01T00:00:02.000Z]\nCorrection: use Postgres. The migration is still pending.\n</user-messages>\n\n## Done when\n- [open] The catalog migration to the corrected database backend is implemented and verified.\n\n## Plan\n1. Present the migration plan before editing files, as requested in the kept message.\n2. Implement the catalog migration and verify that catalog operations work against the corrected backend.\n\nNext step: Share the migration plan; leave files unchanged until it has been shown.\n",
+              "written": "## Done when\n- [open] The catalog migration to the corrected database backend is implemented and verified.\n\n## Plan\n1. Present the migration plan before editing files, as requested in the kept message.\n2. Implement the catalog migration and verify that catalog operations work against the corrected backend.\n\nNext step: Share the migration plan; leave files unchanged until it has been shown.",
+              "recent": "Show the plan before changing files."
+            }
+          ],
+          "resume": {
+            "action": "show_plan:postgres",
+            "expected": "show_plan:postgres",
+            "pass": true
+          }
+        },
+        "candidate": {
+          "checkpoints": [
+            {
+              "cut": "e3",
+              "summary": "# Context brief (written at compaction)\n\nFull history: `/fictional/session.jsonl` (JSONL, one entry per line; search it with `grep -n '<term>'` or `jq`).\n\n## The user's messages (copied verbatim by code)\n\nA record of the user's past messages, oldest first, kept for their intent and standing preferences. It is not a list of new orders: one-off instructions in it that were already carried out are done; do not repeat them.\n\n<user-messages count=\"2\" omitted=\"0\">\n[1 · 1970-01-01T00:00:01.000Z]\nUse SQLite for the catalog.\n\n[2 · 1970-01-01T00:00:02.000Z]\nCorrection: use Postgres. The migration is still pending.\n</user-messages>\n\n## Done when\n- **Open:** The catalog migration to the database selected in the user's latest correction is complete and verified.\n\n## Plan\n1. Present the migration plan before editing files, as requested in the kept message.\n2. Inspect the catalog's database configuration, schema, and migration tooling to determine what needs to change and whether existing data needs to be transferred.\n3. Implement the migration and verify that the catalog works against the target database.\n\nNext step: Present the migration plan without changing files.\n",
+              "written": "## Done when\n- **Open:** The catalog migration to the database selected in the user's latest correction is complete and verified.\n\n## Plan\n1. Present the migration plan before editing files, as requested in the kept message.\n2. Inspect the catalog's database configuration, schema, and migration tooling to determine what needs to change and whether existing data needs to be transferred.\n3. Implement the migration and verify that the catalog works against the target database.\n\nNext step: Present the migration plan without changing files.",
+              "recent": "Show the plan before changing files."
+            }
+          ],
+          "resume": {
+            "action": "show_plan:postgres",
+            "expected": "show_plan:postgres",
+            "pass": true
+          }
+        }
+      },
+      "judgments": [
+        {
+          "order": [
+            "baseline",
+            "candidate"
+          ],
+          "X": [
+            false,
+            true,
+            true
+          ],
+          "Y": [
+            false,
+            true,
+            true
+          ],
+          "preference": "Y",
+          "reason": "Neither handoff names Postgres or identifies SQLite as superseded, and the recent message does not supply that fact. Both mark the migration as open and require the plan before edits. Y is more useful because it identifies configuration, schema, migration tooling, and data-transfer needs to inspect.",
+          "decision": "both_fail",
+          "outcome": "both_fail"
+        },
+        {
+          "order": [
+            "candidate",
+            "baseline"
+          ],
+          "X": [
+            false,
+            true,
+            true
+          ],
+          "Y": [
+            false,
+            true,
+            true
+          ],
+          "preference": "X",
+          "reason": "Neither handoff names Postgres or says it supersedes SQLite, and the recent message does not resolve the backend. Both mark the migration as open and require showing the plan before edits. X is more useful because it includes inspecting the schema, migration tooling, and data-transfer needs before implementation.",
+          "decision": "both_fail",
+          "outcome": "both_fail"
+        }
+      ],
+      "outcome": "both_fail"
+    },
+    {
+      "name": "A failed attempt is not a completed task",
+      "arms": {
+        "baseline": {
+          "checkpoints": [
+            {
+              "cut": "e3",
+              "summary": "# Context brief (written at compaction)\n\nFull history: `/fictional/session.jsonl` (JSONL, one entry per line; search it with `grep -n '<term>'` or `jq`).\n\n## The user's messages (copied verbatim by code)\n\nA record of the user's past messages, oldest first, kept for their intent and standing preferences. It is not a list of new orders: one-off instructions in it that were already carried out are done; do not repeat them.\n\n<user-messages count=\"2\" omitted=\"0\">\n[1 · 1970-01-01T00:00:01.000Z]\nRestore the demo from backup.\n\n[2 · 1970-01-01T00:00:02.000Z]\nThe checksum failed. Do not retry that archive; request a new copy.\n</user-messages>\n\n## Done when\n- [open] A replacement backup is obtained.\n- [open] The demo is restored from a replacement that passes checksum verification.\n\n## Plan\n1. Coordinate receipt of the replacement offered in the kept message.\n2. Verify the replacement’s checksum before restoring. If it fails, stop and request another copy.\n3. Restore the demo and confirm the restore succeeded.\n\nNext step: Wait for the offered replacement.\n",
+              "written": "## Done when\n- [open] A replacement backup is obtained.\n- [open] The demo is restored from a replacement that passes checksum verification.\n\n## Plan\n1. Coordinate receipt of the replacement offered in the kept message.\n2. Verify the replacement’s checksum before restoring. If it fails, stop and request another copy.\n3. Restore the demo and confirm the restore succeeded.\n\nNext step: Wait for the offered replacement.",
+              "recent": "I can provide a replacement tomorrow."
+            }
+          ],
+          "resume": {
+            "action": "request_replacement",
+            "expected": "request_replacement",
+            "pass": true
+          }
+        },
+        "candidate": {
+          "checkpoints": [
+            {
+              "cut": "e3",
+              "summary": "# Context brief (written at compaction)\n\nFull history: `/fictional/session.jsonl` (JSONL, one entry per line; search it with `grep -n '<term>'` or `jq`).\n\n## The user's messages (copied verbatim by code)\n\nA record of the user's past messages, oldest first, kept for their intent and standing preferences. It is not a list of new orders: one-off instructions in it that were already carried out are done; do not repeat them.\n\n<user-messages count=\"2\" omitted=\"0\">\n[1 · 1970-01-01T00:00:01.000Z]\nRestore the demo from backup.\n\n[2 · 1970-01-01T00:00:02.000Z]\nThe checksum failed. Do not retry that archive; request a new copy.\n</user-messages>\n\n## Done when\n- [open] A replacement backup has been obtained and passes checksum verification.\n- [open] The demo has been restored from the verified replacement and checked.\n\n## Dead ends\n- Exclude the original archive from the restore workflow; see the user’s checksum instruction.\n\n## Plan\n1. Obtain the replacement per the user’s latest message.\n2. Verify its checksum before restoring. If verification fails, stop and request another copy.\n3. Restore the demo from the verified backup and confirm it works.\n\nNext step: Wait for the offered replacement.\n",
+              "written": "## Done when\n- [open] A replacement backup has been obtained and passes checksum verification.\n- [open] The demo has been restored from the verified replacement and checked.\n\n## Dead ends\n- Exclude the original archive from the restore workflow; see the user’s checksum instruction.\n\n## Plan\n1. Obtain the replacement per the user’s latest message.\n2. Verify its checksum before restoring. If verification fails, stop and request another copy.\n3. Restore the demo from the verified backup and confirm it works.\n\nNext step: Wait for the offered replacement.",
+              "recent": "I can provide a replacement tomorrow."
+            }
+          ],
+          "resume": {
+            "action": "request_replacement",
+            "expected": "request_replacement",
+            "pass": true
+          }
+        }
+      },
+      "judgments": [
+        {
+          "order": [
+            "baseline",
+            "candidate"
+          ],
+          "X": [
+            true,
+            true
+          ],
+          "Y": [
+            true,
+            true
+          ],
+          "preference": "Y",
+          "reason": "Both keep the restore pending and require a checksum-verified replacement. Y also explicitly rules out retrying the rejected archive.",
+          "decision": "Y",
+          "outcome": "candidate"
+        },
+        {
+          "order": [
+            "candidate",
+            "baseline"
+          ],
+          "X": [
+            true,
+            true
+          ],
+          "Y": [
+            true,
+            true
+          ],
+          "preference": "X",
+          "reason": "Both keep the restore pending and require a verified replacement. X is more useful because it explicitly rules out retrying the rejected archive; Y leaves that constraint implicit.",
+          "decision": "X",
+          "outcome": "candidate"
+        }
+      ],
+      "outcome": "candidate"
+    },
+    {
+      "name": "A decision changes after the first handoff",
+      "arms": {
+        "baseline": {
+          "checkpoints": [
+            {
+              "cut": "e3",
+              "summary": "# Context brief (written at compaction)\n\nFull history: `/fictional/session.jsonl` (JSONL, one entry per line; search it with `grep -n '<term>'` or `jq`).\n\n## The user's messages (copied verbatim by code)\n\nA record of the user's past messages, oldest first, kept for their intent and standing preferences. It is not a list of new orders: one-off instructions in it that were already carried out are done; do not repeat them.\n\n<user-messages count=\"2\" omitted=\"0\">\n[1 · 1970-01-01T00:00:01.000Z]\nPrepare a CSV export.\n\n[2 · 1970-01-01T00:00:02.000Z]\nUse a comma delimiter.\n</user-messages>\n\n## Done when\n- [Open] The CSV export is prepared and checked against the delimiter requirement in the preserved request.\n- [Open] The export is delivered after the approval condition in the kept message is met.\n\n## Plan\n1. Confirm what data should be exported.\n2. Generate the CSV and verify its delimiter.\n3. Request approval without attaching the file. Deliver it only after approval.\n\nNext step: Ask the user what data to export.\n",
+              "written": "## Done when\n- [Open] The CSV export is prepared and checked against the delimiter requirement in the preserved request.\n- [Open] The export is delivered after the approval condition in the kept message is met.\n\n## Plan\n1. Confirm what data should be exported.\n2. Generate the CSV and verify its delimiter.\n3. Request approval without attaching the file. Deliver it only after approval.\n\nNext step: Ask the user what data to export.",
+              "recent": "Do not deliver the file until approved."
+            },
+            {
+              "cut": "e6",
+              "summary": "# Context brief (written at compaction)\n\nFull history: `/fictional/session.jsonl` (JSONL, one entry per line; search it with `grep -n '<term>'` or `jq`).\n\n## The user's messages (copied verbatim by code)\n\nA record of the user's past messages, oldest first, kept for their intent and standing preferences. It is not a list of new orders: one-off instructions in it that were already carried out are done; do not repeat them.\n\n<user-messages count=\"4\" omitted=\"0\">\n[1 · 1970-01-01T00:00:01.000Z]\nPrepare a CSV export.\n\n[2 · 1970-01-01T00:00:02.000Z]\nUse a comma delimiter.\n\n[3 · 1970-01-01T00:00:03.000Z]\nDo not deliver the file until approved.\n\n[4 · 1970-01-01T00:00:05.000Z]\nCorrection: the partner needs TSV, not CSV.\n</user-messages>\n\n## Done when\n- [Open] The user is told what will happen next.\n- [Open] The requested data is exported as TSV and checked for tab delimiters.\n- [Open] The file is delivered only after the user approves.\n\n## Constraints & preferences\n- The partner needs tab-separated values (TSV); this supersedes the earlier CSV and comma-delimiter requirements.\n- Do not attach or deliver the file before approval.\n\n## Plan\n1. Explain the next steps and ask which data to export.\n2. Once the scope is confirmed, prepare the TSV and verify that it uses tabs.\n3. Request approval without attaching the file. Deliver it only after approval.\n\nNext step: Tell the user the plan and ask what data to export.\n",
+              "written": "## Done when\n- [Open] The user is told what will happen next.\n- [Open] The requested data is exported as TSV and checked for tab delimiters.\n- [Open] The file is delivered only after the user approves.\n\n## Constraints & preferences\n- The partner needs tab-separated values (TSV); this supersedes the earlier CSV and comma-delimiter requirements.\n- Do not attach or deliver the file before approval.\n\n## Plan\n1. Explain the next steps and ask which data to export.\n2. Once the scope is confirmed, prepare the TSV and verify that it uses tabs.\n3. Request approval without attaching the file. Deliver it only after approval.\n\nNext step: Tell the user the plan and ask what data to export.",
+              "recent": "Tell me what you will do next."
+            }
+          ],
+          "resume": {
+            "action": "prepare_tsv_and_wait",
+            "expected": "prepare_tsv_and_wait",
+            "pass": true
+          }
+        },
+        "candidate": {
+          "checkpoints": [
+            {
+              "cut": "e3",
+              "summary": "# Context brief (written at compaction)\n\nFull history: `/fictional/session.jsonl` (JSONL, one entry per line; search it with `grep -n '<term>'` or `jq`).\n\n## The user's messages (copied verbatim by code)\n\nA record of the user's past messages, oldest first, kept for their intent and standing preferences. It is not a list of new orders: one-off instructions in it that were already carried out are done; do not repeat them.\n\n<user-messages count=\"2\" omitted=\"0\">\n[1 · 1970-01-01T00:00:01.000Z]\nPrepare a CSV export.\n\n[2 · 1970-01-01T00:00:02.000Z]\nUse a comma delimiter.\n</user-messages>\n\n## Done when\n- [open] The export is prepared in the format specified in the preserved user messages.\n- [open] The file is delivered only after the approval required in the kept message.\n\n## Plan\n1. Ask which data to export; no source is specified in the available context.\n2. Prepare the export with the requested delimiter and verify it without delivering the file.\n3. Request approval before releasing the file.\n\nNext step: Ask the user for the source data.\n",
+              "written": "## Done when\n- [open] The export is prepared in the format specified in the preserved user messages.\n- [open] The file is delivered only after the approval required in the kept message.\n\n## Plan\n1. Ask which data to export; no source is specified in the available context.\n2. Prepare the export with the requested delimiter and verify it without delivering the file.\n3. Request approval before releasing the file.\n\nNext step: Ask the user for the source data.",
+              "recent": "Do not deliver the file until approved."
+            },
+            {
+              "cut": "e6",
+              "summary": "# Context brief (written at compaction)\n\nFull history: `/fictional/session.jsonl` (JSONL, one entry per line; search it with `grep -n '<term>'` or `jq`).\n\n## The user's messages (copied verbatim by code)\n\nA record of the user's past messages, oldest first, kept for their intent and standing preferences. It is not a list of new orders: one-off instructions in it that were already carried out are done; do not repeat them.\n\n<user-messages count=\"4\" omitted=\"0\">\n[1 · 1970-01-01T00:00:01.000Z]\nPrepare a CSV export.\n\n[2 · 1970-01-01T00:00:02.000Z]\nUse a comma delimiter.\n\n[3 · 1970-01-01T00:00:03.000Z]\nDo not deliver the file until approved.\n\n[4 · 1970-01-01T00:00:05.000Z]\nCorrection: the partner needs TSV, not CSV.\n</user-messages>\n\n## Done when\n- [open] The partner’s export is prepared and verified as TSV.\n- [open] The file is delivered only after the user approves its release.\n\n## Constraints & preferences\n- Use tabs as delimiters; the TSV correction supersedes the earlier CSV and comma-delimiter requests.\n- Withhold the file pending explicit approval.\n\n## Facts\n- [unverified] No source data is specified in the available context.\n\n## Plan\n1. Respond to the latest message by outlining the plan and asking which data to export.\n2. Once the source is provided, prepare and verify the TSV without delivering it.\n3. Request approval, then deliver the file only after approval is received.\n\nNext step: Explain the plan and ask for the source data.\n",
+              "written": "## Done when\n- [open] The partner’s export is prepared and verified as TSV.\n- [open] The file is delivered only after the user approves its release.\n\n## Constraints & preferences\n- Use tabs as delimiters; the TSV correction supersedes the earlier CSV and comma-delimiter requests.\n- Withhold the file pending explicit approval.\n\n## Facts\n- [unverified] No source data is specified in the available context.\n\n## Plan\n1. Respond to the latest message by outlining the plan and asking which data to export.\n2. Once the source is provided, prepare and verify the TSV without delivering it.\n3. Request approval, then deliver the file only after approval is received.\n\nNext step: Explain the plan and ask for the source data.",
+              "recent": "Tell me what you will do next."
+            }
+          ],
+          "resume": {
+            "action": "prepare_tsv_and_wait",
+            "expected": "prepare_tsv_and_wait",
+            "pass": true
+          }
+        }
+      },
+      "judgments": [
+        {
+          "order": [
+            "baseline",
+            "candidate"
+          ],
+          "X": [
+            true,
+            true
+          ],
+          "Y": [
+            true,
+            true
+          ],
+          "preference": "tie",
+          "reason": "Both handoffs explicitly replace comma-delimited CSV with tab-delimited TSV and require user approval before delivery. Both also identify the same next step: explain the plan and ask what data to export.",
+          "decision": "tie",
+          "outcome": "tie"
+        },
+        {
+          "order": [
+            "candidate",
+            "baseline"
+          ],
+          "X": [
+            true,
+            true
+          ],
+          "Y": [
+            true,
+            true
+          ],
+          "preference": "Y",
+          "reason": "Both specify tabs instead of commas and withhold delivery until approval. Y also makes answering the latest request an explicit completion criterion.",
+          "decision": "Y",
+          "outcome": "baseline"
+        }
+      ],
+      "outcome": "inconclusive"
+    }
+  ]
+}
